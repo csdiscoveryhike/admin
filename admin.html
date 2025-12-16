@@ -436,10 +436,14 @@ fetch(API_URL + "?action=validate&token=" + encodeURIComponent(token))
   .then(r => r.json())
   .then(d => {
     if (!d.valid) {
-      alert("Session expired. Please sign in again.");
       window.location.href = "./";
+    } else {
+      // ✅ STEP 1 FIX — remove token from URL
+      window.history.replaceState({}, document.title, "./");
     }
   });
+
+
 
 // Logout handler (invalidate token)
 const logoutBtn = document.getElementById("logoutBtn");
