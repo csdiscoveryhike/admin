@@ -363,7 +363,9 @@ function showStatus(message, type = "info") {
 const API_URL = "https://script.google.com/macros/s/AKfycbziIaYIB0YL3RCPCTfINUeEerDscp3xJcO0nrw7wtgwXmezgpg78pG1btspJ7WJpZue/exec";
 
 function login() {
-  const userid = document.getElementById("userid").value.trim();
+  const userid = document.getElementById("userid").value
+  .trim()
+  .toLowerCase();
   const password = document.getElementById("password").value;
   const button = document.querySelector("button");
 

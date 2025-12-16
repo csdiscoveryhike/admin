@@ -439,8 +439,14 @@ function toggleDark() {
 /* ================= AUTH + LOGOUT LOGIC ================= */
 
 const API_URL = "https://script.google.com/macros/s/AKfycbziIaYIB0YL3RCPCTfINUeEerDscp3xJcO0nrw7wtgwXmezgpg78pG1btspJ7WJpZue/exec";
-const params = new URLSearchParams(window.location.search);
-const token = params.get("token");
+let token = new URLSearchParams(window.location.search).get("token");
+
+if (token) {
+  sessionStorage.setItem("dh_token", token);
+} else {
+  token = sessionStorage.getItem("dh_token");
+}
+
 
 // Block access without token
 if (!token) {
