@@ -287,13 +287,21 @@ function toggleDark() {
 const API_URL = "https://script.google.com/macros/s/AKfycbziIaYIB0YL3RCPCTfINUeEerDscp3xJcO0nrw7wtgwXmezgpg78pG1btspJ7WJpZue/exec";
 
 function login() {
-  const userid = document.getElementById("userid").value.trim();
-  const password = document.getElementById("password").value;
+  const useridInput = document.getElementById("userid");
+  const passwordInput = document.getElementById("password");
+  const button = document.querySelector("button");
+
+  const userid = useridInput.value.trim();
+  const password = passwordInput.value;
 
   if (!userid || !password) {
     alert("Please enter User ID and Password");
     return;
   }
+
+  // 🔒 Enter loading state
+  button.classList.add("loading");
+  button.textContent = "Signing in…";
 
   const url =
     API_URL +
@@ -307,16 +315,16 @@ function login() {
       if (d.success) {
         window.location.href = "admin.html?token=" + d.token;
       } else {
-        alert("Invalid credentials");
+        throw new Error("Invalid credentials");
       }
     })
-    .catch(err => {
-      alert("Authentication failed");
-      console.error(err);
+    .catch(() => {
+      alert("Invalid credentials");
+      // 🔁 Reset UI
+      button.classList.remove("loading");
+      button.textContent = "Continue";
     });
 }
-
-
 
 
 </script>
