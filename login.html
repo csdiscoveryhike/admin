@@ -253,7 +253,8 @@ function toggleDark() {
 }
 
 /* Placeholder for next step */
-const API_URL = "https://script.google.com/macros/s/AKfycbwkFKsBr1VkJcKxuEYiPKdM7huDAyRnqezn05t6HCXkqSxYsRMC15Oa9w1LGmV8L4XZ/exec";
+
+const API_URL = "https://script.google.com/macros/s/AKfycbxoY_dPAP7ECMAsB88OJZA75FKluaw9IUCNrjEdane_bUQHfuSuwOE-9LTlpUnwHAci/exec";
 
 function login() {
   const userid = document.getElementById("userid").value.trim();
@@ -264,26 +265,30 @@ function login() {
     return;
   }
 
-  fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify({
-      action: "login",
-      userid,
-      password
+  const url =
+    API_URL +
+    "?action=login" +
+    "&userid=" + encodeURIComponent(userid) +
+    "&password=" + encodeURIComponent(password);
+
+  fetch(url)
+    .then(r => r.json())
+    .then(d => {
+      if (d.success) {
+        window.location.href = "admin.html?token=" + d.token;
+      } else {
+        alert("Invalid credentials");
+      }
     })
-  })
-  .then(r => r.json())
-  .then(d => {
-    if (d.success) {
-      window.location.href = "admin.html?token=" + d.token;
-    } else {
-      alert("Invalid credentials");
-    }
-  })
-  .catch(() => {
-    alert("Authentication service unavailable");
-  });
+    .catch(err => {
+      alert("Authentication failed");
+      console.error(err);
+    });
 }
+
+
+
+
 </script>
 
 </body>
