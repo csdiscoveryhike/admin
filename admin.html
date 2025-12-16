@@ -355,7 +355,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbxnwurhaLFJZkjNd2TnYo1w
 const token = new URLSearchParams(window.location.search).get("token");
 
 if (!token) {
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 fetch(API_URL + "?action=validate&token=" + token)
@@ -363,7 +363,7 @@ fetch(API_URL + "?action=validate&token=" + token)
   .then(d => {
     if (!d.valid) {
       alert("Session expired. Please sign in again.");
-      window.location.href = "login.html";
+      window.location.href = "index.html";
     }
   });
 </script>
