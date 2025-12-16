@@ -267,6 +267,45 @@ body.dark .restricted {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
+/* ===== FOOTER SESSION BAR ===== */
+.session-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+}
+
+.logout-footer-btn {
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-footer-btn:hover {
+  background: rgba(255,255,255,0.28);
+}
+
+.logout-footer-btn:active {
+  transform: scale(0.96);
+}
+
+/* Loading state */
+.logout-footer-btn.loading {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* Spinner */
+.logout-footer-btn.loading::after {
+  content: " ⏳";
+}
+
 </style>
 </head>
 
@@ -279,9 +318,6 @@ body.dark .restricted {
 
   <!-- HEADER -->
   <div class="header-gradient">
-    <!-- LOGOUT BUTTON (NEW) -->
-    <button class="logout-btn" id="logoutBtn">Logout</button>
-
     <a href="https://www.discoveryhike.in" target="_blank">
       <img src="https://i.imgur.com/40sl7Sv.png" alt="Discovery Hike Logo">
     </a>
@@ -355,8 +391,17 @@ body.dark .restricted {
   </div>
   <!-- FOOTER -->
   <div class="footer">
+  <div class="session-bar">
+    <span id="sessionText">Secure admin session active</span>
+    <button id="logoutBtn" class="logout-footer-btn">
+      Logout
+    </button>
+  </div>
+  <div style="margin-top:10px;">
     © Discovery Hike • Internal Admin System
   </div>
+</div>
+
 
 </div>
 
@@ -397,12 +442,22 @@ fetch(API_URL + "?action=validate&token=" + encodeURIComponent(token))
   });
 
 // Logout handler (invalidate token)
-document.getElementById("logoutBtn").addEventListener("click", () => {
+const logoutBtn = document.getElementById("logoutBtn");
+const sessionText = document.getElementById("sessionText");
+
+logoutBtn.addEventListener("click", () => {
+  logoutBtn.classList.add("loading");
+  logoutBtn.textContent = "Logging out";
+  sessionText.textContent = "Ending secure session…";
+
   fetch(API_URL + "?action=logout&token=" + encodeURIComponent(token))
     .finally(() => {
-      window.location.href = "./";
+      setTimeout(() => {
+        window.location.href = "./";
+      }, 600);
     });
 });
+
 </script>
 
 </body>
