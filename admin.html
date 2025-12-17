@@ -478,9 +478,13 @@ logoutBtn.addEventListener("click", () => {
 
   fetch(API_URL + "?action=logout&token=" + encodeURIComponent(token))
     .finally(() => {
+      // 🔥 CRITICAL FIX
+      sessionStorage.removeItem("dh_token");
+      token = null;
+
       setTimeout(() => {
         window.location.href = "./";
-      }, 600);
+      }, 400);
     });
 });
 
