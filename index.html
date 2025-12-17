@@ -389,7 +389,7 @@ function login() {
       if (d.success) {
         showStatus("✅ Access granted", "success", 1200);
         setTimeout(() => {
-          window.location.href = "admin.html?token=" + d.token;
+          window.location.href = "/admin.html?token=" + d.token;
         }, 800);
       } else {
         throw new Error();
