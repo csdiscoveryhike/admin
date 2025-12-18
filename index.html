@@ -315,21 +315,26 @@ body.dark .status.info {
     <p>Use your assigned admin credentials</p>
     <div id="statusMsg" class="status hidden"></div>
 
-    <input
-      type="text"
-      id="userid"
-      placeholder="User ID"
-      autocomplete="username"
-    >
+    <form id="loginForm">
 
-    <input
-      type="password"
-      id="password"
-      placeholder="Password"
-      autocomplete="current-password"
-    >
+  <input
+    type="text"
+    id="userid"
+    placeholder="User ID"
+    autocomplete="username"
+  >
 
-    <button onclick="login()">Continue</button>
+  <input
+    type="password"
+    id="password"
+    placeholder="Password"
+    autocomplete="current-password"
+  >
+
+  <button type="submit">Continue</button>
+
+</form>
+
 
     <div class="note">
       Access is logged • Sessions expire automatically
@@ -415,8 +420,13 @@ showStatus("❌ Invalid credentials", "error");
 
 }
 
+document.getElementById("loginForm").addEventListener("submit", function (e) {
+  e.preventDefault(); // stop page reload
+  login();            // call your existing function
+});
 
 </script>
 </body>
 </html>
+
 
