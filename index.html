@@ -2,23 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Discovery Hike | Admin Login</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+<title>Discovery Hike | Admin Portal</title>
+<link rel="icon" href="favicon.ico">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Prevent indexing -->
 <meta name="googlebot" content="noindex, nofollow">
 <meta name="robots" content="noindex, nofollow">
 <meta http-equiv="Cache-Control" content="no-store">
 
 <style>
+/* Hide until fully loaded */
+body { visibility: hidden; }
+
 /* ================= THEME VARIABLES ================= */
 :root {
   --primary: #00254d;
   --accent: #004b99;
+  --danger: #c62828;
 
   --bg: #f4f6f8;
   --card: #ffffff;
   --text: #333;
   --muted: #666;
+
+  --tile-title-light: #00254d;
+  --tile-title-dark: #f1f5f9;
 }
 
 /* DARK MODE */
@@ -30,18 +39,69 @@ body.dark {
 }
 
 /* ================= BASE ================= */
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
-  min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
                Roboto, Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
   transition: background 0.3s ease, color 0.3s ease;
+}
+
+.container {
+  max-width: 820px;
+  margin: auto;
+  padding: 18px;
+}
+
+/* ================= HEADER ================= */
+.header-gradient {
+  background: linear-gradient(135deg, #00254d, #004b99);
+  padding: 28px 18px 30px;
+  border-radius: 18px;
+  text-align: center;
+  margin-bottom: 26px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+  position: relative;
+}
+
+.header-gradient img {
+  width: 160px;
+  max-width: 70%;
+  margin: 0 auto 10px;
+  display: block;
+}
+
+.header-gradient h1 {
+  color: #ffffff;
+  font-size: 20px;
+  margin: 6px 0 4px;
+}
+
+.header-gradient p {
+  color: #d0e4ff;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* ================= LOGOUT BUTTON ================= */
+.logout-btn {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: rgba(255,255,255,0.28);
 }
 
 /* ================= DARK MODE TOGGLE ================= */
@@ -58,311 +118,119 @@ body {
   z-index: 10;
 }
 
-/* ================= WRAPPER ================= */
-.wrapper {
-  max-width: 420px;
-  margin: auto;
-  padding: 18px;
-}
+/* ================= SECTIONS ================= */
+.section { margin-top: 22px; }
 
-/* ================= HEADER ================= */
-.header-gradient {
-  background: linear-gradient(135deg, #00254d, #004b99);
-  padding: 28px 18px 30px;
-  border-radius: 18px;
-  text-align: center;
-  margin-top: 40px;
-  margin-bottom: 26px;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
-  animation: fadeDown 0.6s ease;
-}
-
-.header-gradient img {
-  width: 150px;
-  max-width: 70%;
-  margin: 0 auto 10px;
-  display: block;
-}
-
-.header-gradient h1 {
-  color: #ffffff;
-  font-size: 20px;
-  margin: 6px 0 4px;
-}
-
-.header-gradient p {
-  color: #d0e4ff;
+.section-title {
   font-size: 13px;
-  margin: 0;
-  letter-spacing: 0.4px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
 }
 
-/* ================= LOGIN CARD ================= */
-.card {
+/* ================= GRID ================= */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+}
+
+/* ================= TILE ================= */
+.tile {
   background: var(--card);
-  border-radius: 16px;
-  padding: 24px 22px 26px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.10);
-  animation: fadeUp 0.6s ease;
-}
-
-.card h2 {
-  margin: 0 0 6px;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.card p {
-  margin: 0 0 18px;
-  font-size: 13px;
-  color: var(--muted);
-}
-
-/* DARK MODE LOGIN CARD */
-body.dark .card {
-  background: #0b1220;
-  border: 1px solid #1f2937;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.45);
-}
-
-/* ================= INPUT ================= */
-input {
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: 10px;
-  border: 1px solid #d1d5db;
-  font-size: 14px;
-  outline: none;
-  transition: border 0.2s ease, box-shadow 0.2s ease;
-}
-
-input + input {
-  margin-top: 12px;
-}
-
-body.dark input {
-  background: #020617;
-  border-color: #1f2937;
-  color: #e5e7eb;
-}
-
-input:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
-}
-
-/* ================= BUTTON ================= */
-button {
-  margin-top: 18px;
-  width: 100%;
-  padding: 12px;
-  font-size: 14px;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  background: linear-gradient(135deg, #00254d, #004b99);
-  color: #ffffff;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
-}
-
-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-}
-
-button:active {
-  transform: scale(0.98);
-}
-
-/* ===== LOGIN LOADING STATE ===== */
-button.loading {
-  pointer-events: none;
-  opacity: 0.85;
-  position: relative;
-  overflow: hidden;
-}
-
-button.loading::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -40%;
-  width: 40%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255,255,255,0.35),
-    transparent
-  );
-  animation: shimmer 1s infinite;
-}
-
-@keyframes shimmer {
-  100% {
-    left: 120%;
-  }
-}
-
-/* ================= FOOT NOTE ================= */
-.note {
-  margin-top: 14px;
-  font-size: 12px;
-  color: var(--muted);
+  border-radius: 14px;
+  padding: 18px 14px;
   text-align: center;
+  text-decoration: none;
+  color: var(--primary);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-/* ================= ANIMATIONS ================= */
-@keyframes fadeDown {
-  from { opacity: 0; transform: translateY(-12px); }
-  to { opacity: 1; transform: translateY(0); }
+.tile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 24px rgba(0,0,0,0.18);
 }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+.tile-icon { font-size: 26px; margin-bottom: 10px; }
+.tile-title { font-size: 14px; font-weight: 600; }
+.tile-desc { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+.tag {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
 }
 
-/* ===== INLINE STATUS MESSAGE (PRO UX) ===== */
-.status {
-  margin: 10px 0 14px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  opacity: 1;
-  transition: opacity 0.2s ease;
+.safe {
+  background: #e3f2fd;
+  color: #0d47a1;
 }
 
-.status.hidden {
-  display: none;
-}
-
-.status.error {
+.restricted {
   background: #fdecea;
-  color: #7f1d1d;
+  color: var(--danger);
 }
 
-.status.success {
-  background: #e6f7f1;
-  color: #065f46;
+/* ================= FOOTER ================= */
+.footer {
+  margin-top: 40px;
+  padding: 18px;
+  text-align: center;
+  font-size: 12px;
+  color: #d0e4ff;
+  background: linear-gradient(135deg, #00254d, #004b99);
+  border-radius: 14px;
 }
-
-.status.info {
-  background: #e8f0fe;
-  color: #1e3a8a;
-}
-
-/* Dark mode */
-body.dark .status.error {
-  background: rgba(239, 68, 68, 0.15);
-  color: #fca5a5;
-}
-
-body.dark .status.success {
-  background: rgba(16, 185, 129, 0.15);
-  color: #6ee7b7;
-}
-
-body.dark .status.info {
-  background: rgba(59, 130, 246, 0.15);
-  color: #93c5fd;
-}
-
-
-/* ===== SHAKE ANIMATION (LOGIN ERROR) ===== */
-@keyframes shake {
-  0% { transform: translateX(0); }
-  15% { transform: translateX(-6px); }
-  30% { transform: translateX(6px); }
-  45% { transform: translateX(-5px); }
-  60% { transform: translateX(5px); }
-  75% { transform: translateX(-3px); }
-  90% { transform: translateX(3px); }
-  100% { transform: translateX(0); }
-}
-
-.card.shake {
-  animation-name: shake;
-  animation-duration: 0.45s;
-  animation-timing-function: ease;
-}
-
-
 </style>
 </head>
 
 <body>
 
-<!-- DARK MODE TOGGLE -->
+<!-- Dark mode toggle -->
 <div class="toggle" onclick="toggleDark()">🌙 / ☀️</div>
 
-<div class="wrapper">
+<div class="container">
 
-  <!-- HEADER -->
   <div class="header-gradient">
+    <button class="logout-btn" id="logoutBtn">Logout</button>
     <img src="https://i.imgur.com/40sl7Sv.png" alt="Discovery Hike Logo">
-    <h1>Admin Access</h1>
-    <p>Internal operational system • Authorized users only</p>
+    <h1>Discovery Hike – Admin Portal</h1>
+    <p>Internal operational tools • Authorized access only</p>
   </div>
-  <!-- LOGIN CARD -->
-  <div class="card">
-    <h2>Sign in to continue</h2>
-    <p>Use your assigned admin credentials</p>
-    <div id="statusMsg" class="status hidden"></div>
 
-    <form id="loginForm">
-<input
-  type="email"
-  id="userid"
-  placeholder="User ID"
-  autocomplete="username"
-  required
->
+  <div class="section">
+    <div class="section-title">Operational Tools</div>
+    <div class="grid">
+      <a class="tile" href="https://forms.gle/iuwEfBPKLV5caX357" target="_blank">
+        <div class="tile-icon">📧</div>
+        <div class="tile-title">Confirmation Email</div>
+        <div class="tile-desc">Send trek confirmation</div>
+        <div class="tag safe">SAFE</div>
+      </a>
 
-
-  <input
-    type="password"
-    id="password"
-    placeholder="Password"
-    autocomplete="current-password"
-  >
-
-  <button type="submit">Continue</button>
-
-</form>
-
-
-    <div class="note">
-      Access is logged • Sessions expire automatically
+      <a class="tile" href="https://discoveryhike.in/" target="_blank">
+        <div class="tile-icon">🚐</div>
+        <div class="tile-title">Pickup Info</div>
+        <div class="tile-desc">Transport details</div>
+        <div class="tag safe">SAFE</div>
+      </a>
     </div>
+  </div>
+
+  <div class="footer">
+    © Discovery Hike • Internal Admin System
   </div>
 
 </div>
 
-<!-- SUPABASE -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
-/* ================= SUPABASE CONFIG ================= */
-const SUPABASE_URL = "https://cilykokjiyxcdzrghceh.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNpbHlrb2tqaXl4Y2R6cmdoY2VoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg0ODEyNjEsImV4cCI6MjA4NDA1NzI2MX0.hMGyLYPWUd3urT6jvbL-Vfp57zDi69t2rAe8hInMVRU";
-
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
-
-/* 🔐 AUTO REDIRECT IF SESSION EXISTS */
-supabaseClient.auth.getSession().then(({ data }) => {
-  if (data.session) {
-    window.location.replace("/admin.html");
-  }
-});
+/* ================= SHOW PAGE ================= */
+document.body.style.visibility = "visible";
 
 /* ================= DARK MODE ================= */
 const storedTheme = localStorage.getItem("dh-theme");
@@ -376,65 +244,12 @@ function toggleDark() {
   );
 }
 
-/* ================= STATUS ================= */
-function showStatus(message, type = "info") {
-  const box = document.getElementById("statusMsg");
-  box.textContent = message;
-  box.className = `status ${type}`;
-}
-
-/* ================= LOGIN ================= */
-async function login() {
-  const button = document.querySelector("#loginForm button");
-  const email = document.getElementById("userid").value.trim().toLowerCase();
-  const password = document.getElementById("password").value;
-
-  if (!email || !password) {
-    showStatus("⚠️ Enter email and password", "info");
-    return;
-  }
-
-  button.classList.add("loading");
-  button.textContent = "Signing in…";
-
-  const { error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  button.classList.remove("loading");
-  button.textContent = "Continue";
-
-  if (error) {
-    showStatus("❌ Invalid credentials", "error");
-    document.getElementById("password").value = "";
-    document.querySelector(".card").classList.add("shake");
-    setTimeout(() => {
-      document.querySelector(".card").classList.remove("shake");
-    }, 450);
-    return;
-  }
-
-  showStatus("✅ Access granted", "success");
-  setTimeout(() => {
-    window.location.href = "/admin.html";
-  }, 600);
-}
-
-document.getElementById("loginForm").addEventListener("submit", e => {
-  e.preventDefault();
-  login();
+/* ================= LOGOUT ================= */
+/* Ends Cloudflare Access session */
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  window.location.href = "/cdn-cgi/access/logout";
 });
 </script>
 
-
 </body>
 </html>
-
-
-
-
-
-
-
-
