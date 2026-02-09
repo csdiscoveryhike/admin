@@ -453,6 +453,7 @@ body.dark .restricted {
 window.addEventListener("pageshow", e => {
   if (e.persisted) location.reload();
 });
+document.body.classList.add("ready");
 
 /* ================= DARK MODE ================= */
 const storedTheme = localStorage.getItem("dh-theme");
