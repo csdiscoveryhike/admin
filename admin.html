@@ -14,7 +14,6 @@ content="
   img-src 'self' https://i.imgur.com;
   script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
   connect-src
-    https://*.supabase.co
     https://script.google.com
     https://script.googleusercontent.com;
   frame-src https://forms.gle https://docs.google.com https://t.me;
@@ -25,8 +24,13 @@ content="
 
 <style>
 
-  body {
-  visibility: hidden;
+ body {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+body.ready {
+  opacity: 1;
 }
 
 /* ================= THEME VARIABLES ================= */
@@ -441,18 +445,9 @@ body.dark .restricted {
 </div>
 
 
-<!-- SUPABASE -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 <script>
-/* ================= SUPABASE CONFIG ================= */
-const SUPABASE_URL = "https://cilykokjiyxcdzrghceh.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNpbHlrb2tqaXl4Y2R6cmdoY2VoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg0ODEyNjEsImV4cCI6MjA4NDA1NzI2MX0.hMGyLYPWUd3urT6jvbL-Vfp57zDi69t2rAe8hInMVRU";
-
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
 
 /* ================= PREVENT BF CACHE ================= */
 window.addEventListener("pageshow", e => {
@@ -471,24 +466,6 @@ function toggleDark() {
   );
 }
 
-/* ================= AUTH GUARD ================= */
-(async () => {
-  const { data } = await supabaseClient.auth.getSession();
-
-  if (!data.session) {
-    window.location.replace("/index.html");
-    return;
-  }
-
-  document.body.style.visibility = "visible";
-})();
-
-/* 🔐 HANDLE SESSION EXPIRY / LOGOUT IN OTHER TAB */
-supabaseClient.auth.onAuthStateChange((event) => {
-  if (event === "SIGNED_OUT") {
-    window.location.replace("/index.html");
-  }
-});
 
 /* ================= LOGOUT ================= */
 const logoutBtn = document.getElementById("logoutBtn");
@@ -500,7 +477,6 @@ logoutBtn.addEventListener("click", async () => {
   logoutBtn.disabled = true;
   sessionText.textContent = "Ending secure session…";
 
-  await supabaseClient.auth.signOut();
   window.location.replace("/index.html");
 });
 </script>
