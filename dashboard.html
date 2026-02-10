@@ -1738,6 +1738,13 @@ tr.selected td.status-cell::after {
   }
 }
 
+@media (max-width: 800px) {
+  .mobile-trek-date::before {
+    content: "•";
+    margin-right: 6px;
+    opacity: 0.35;
+  }
+}
 
 </style>
 
@@ -2369,7 +2376,7 @@ const statusClass = b.date > today ? 'is-upcoming' : 'is-past';
     <div class="mobile-trek-title">${b.trek}</div>
 
     <div class="mobile-trek-date">
-      📅 ${b.date.toLocaleDateString('en-GB')}
+     ${b.date.toLocaleDateString('en-GB')}
     </div>
 
   </div>
