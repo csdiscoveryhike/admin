@@ -1669,6 +1669,38 @@ tr.selected td.status-cell::after {
 /* =========================================
    MOBILE: TREK HEADER STATUS TINTS
 ========================================= */
+/* =========================================
+   MOBILE: TREK HEADER STATUS LABEL
+========================================= */
+@media (max-width: 800px) {
+
+  .mobile-trek-status {
+    display: inline-block;
+    margin-bottom: 6px;
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+
+    padding: 4px 10px;
+    border-radius: 999px;
+
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(6px);
+  }
+
+  .mobile-trek-header.is-upcoming .mobile-trek-status {
+    color: #047857;
+    background: rgba(236,253,245,0.9);
+  }
+
+  .mobile-trek-header.is-past .mobile-trek-status {
+    color: var(--text-muted);
+    background: rgba(241,245,249,0.9);
+  }
+}
+
 @media (max-width: 800px) {
 
   /* Upcoming – optimistic, fresh */
@@ -2328,12 +2360,20 @@ const statusClass = b.date > today ? 'is-upcoming' : 'is-past';
 
   front.innerHTML = `
 
-   <div class="mobile-trek-header ${statusClass}">
-  <div class="mobile-trek-title">${b.trek}</div>
-  <div class="mobile-trek-date">
-    ✅ ${b.date.toLocaleDateString('en-GB')}
+  <div class="mobile-trek-header ${statusClass}">
+    
+    <div class="mobile-trek-status">
+      ${b.date > today ? 'Upcoming Batch' : 'Past Batch'}
+    </div>
+
+    <div class="mobile-trek-title">${b.trek}</div>
+
+    <div class="mobile-trek-date">
+      📅 ${b.date.toLocaleDateString('en-GB')}
+    </div>
+
   </div>
-</div>
+
 
 
    <div class="trek-stats">
