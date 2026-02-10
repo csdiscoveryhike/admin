@@ -1666,6 +1666,45 @@ tr.selected td.status-cell::after {
     backdrop-filter: blur(6px);
   }
 }
+/* =========================================
+   MOBILE: TREK HEADER STATUS TINTS
+========================================= */
+@media (max-width: 800px) {
+
+  /* Upcoming – optimistic, fresh */
+  .mobile-trek-header.is-upcoming {
+    background: linear-gradient(
+      135deg,
+      rgba(16,185,129,0.22),
+      rgba(16,185,129,0.10)
+    );
+    box-shadow:
+      inset 0 0 0 1px rgba(16,185,129,0.25),
+      0 8px 20px rgba(0,0,0,0.08);
+  }
+
+  .mobile-trek-header.is-upcoming .mobile-trek-date {
+    color: #047857;
+    background: rgba(236,253,245,0.85);
+  }
+
+  /* Past – muted, executive */
+  .mobile-trek-header.is-past {
+    background: linear-gradient(
+      135deg,
+      rgba(148,163,184,0.22),
+      rgba(148,163,184,0.10)
+    );
+    box-shadow:
+      inset 0 0 0 1px rgba(148,163,184,0.28),
+      0 6px 16px rgba(0,0,0,0.06);
+  }
+
+  .mobile-trek-header.is-past .mobile-trek-date {
+    color: var(--text-muted);
+    background: rgba(241,245,249,0.85);
+  }
+}
 
 
 </style>
@@ -2283,17 +2322,19 @@ function openMobileCard(b) {
   const front = overlay.querySelector('.mobile-front');
   const back = overlay.querySelector('.mobile-back');
 const rows = b.__matchedClients?.length ? b.__matchedClients : b.rows;
+const statusClass = b.date > today ? 'is-upcoming' : 'is-past';
 
   flip.classList.remove('flipped');
 
   front.innerHTML = `
 
-   <div class="mobile-trek-header">
+   <div class="mobile-trek-header ${statusClass}">
   <div class="mobile-trek-title">${b.trek}</div>
   <div class="mobile-trek-date">
     📅 ${b.date.toLocaleDateString('en-GB')}
   </div>
 </div>
+
 
    <div class="trek-stats">
   <div>Bookings<br>${rows.length}</div>
