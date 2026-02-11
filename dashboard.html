@@ -3051,12 +3051,6 @@ function refreshSlides() {
   }
 }
 
-document.getElementById("logoutBtnDash").addEventListener("click", function () {
-  this.classList.add("loading");
-  this.textContent = "Logging out…";
-  window.location.href = "/cdn-cgi/access/logout";
-});
-
   function slideTo(i) {
   const slides = cachedSlides;
 
