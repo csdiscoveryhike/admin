@@ -11,8 +11,13 @@
 
 <style>
 body {
-  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.35s ease;
 }
+body.loaded {
+  opacity: 1;
+}
+
 
 /* =========================================================
    DESIGN TOKENS (LIGHT / DARK)
@@ -1738,6 +1743,57 @@ tr.selected td.status-cell::after {
   }
 }
 
+.chart-card select {
+  padding: 6px 8px;
+  font-size: 13px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  color: var(--text);
+}
+/* =========================================
+   DASHBOARD FOOTER – CLEAN & STABLE
+========================================= */
+
+.footer {
+  margin-top: 50px;
+  padding: 22px 0 10px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.session-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1300px;
+  margin: 0 auto 12px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: var(--surface-soft);
+  box-shadow: var(--shadow-sm);
+}
+
+.logout-footer-btn {
+  padding: 8px 14px;
+  font-size: 13px;
+  border-radius: 10px;
+}
+
+/* Mobile layout */
+@media (max-width: 800px) {
+  .session-bar {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .logout-footer-btn {
+    width: 100%;
+  }
+}
 
 </style>
 
@@ -1923,7 +1979,34 @@ tr.selected td.status-cell::after {
     </div>
     <canvas id="batchLoad"></canvas>
   </div>
+<div class="chart-card">
+  <div class="chart-title">Earnings per Trek</div>
+  <div class="chart-desc">
+    Revenue contribution by trek. Filter by month and year to analyze performance trends.
+  </div>
 
+  <!-- Filter Row -->
+  <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
+    <select id="earnYear"></select>
+    <select id="earnMonth">
+      <option value="all">All Months</option>
+    </select>
+  </div>
+
+  <canvas id="earnPerTrek"></canvas>
+</div>
+
+</div>
+<div class="footer">
+  <div class="session-bar">
+    <span>Secure admin session active</span>
+    <button id="logoutBtnDash" class="logout-footer-btn">
+      Logout
+    </button>
+  </div>
+  <div style="margin-top:10px;">
+    © Discovery Hike • Internal Admin System
+  </div>
 </div>
 
 
@@ -1941,7 +2024,7 @@ window.addEventListener("pageshow", e => {
   Cloudflare Access guarantees authentication
   before this page is served.
 */
-document.body.style.visibility = "visible";
+document.body.classList.add("loaded");
 
 
 /* ===== YOUR ORIGINAL SCRIPT (UNCHANGED, ONLY EXTENDED) ===== */
@@ -2026,6 +2109,24 @@ fetch(DATA_URL).then(r=>r.json()).then(d=>{
   renderHistorical(allBatches);
   renderCharts(allBatches);
   renderOpsCalendar();
+  const years = [...new Set(allBatches.map(b => b.date.getFullYear()))].sort();
+
+earnYear.innerHTML =
+  `<option value="all">All Years</option>` +
+  years.map(y => `<option value="${y}">${y}</option>`).join('');
+
+for (let i = 1; i <= 12; i++) {
+  earnMonth.innerHTML += `
+    <option value="${String(i).padStart(2,'0')}">
+      ${new Date(0, i - 1).toLocaleString('en-GB', { month: 'long' })}
+    </option>
+  `;
+}
+
+earnYear.onchange = earnMonth.onchange = renderEarningsChart;
+
+renderEarningsChart();
+
 });
 
 function colIndex(regex) {
@@ -2040,6 +2141,69 @@ function rowMatchesSearch(row, search) {
     .map(v => String(v ?? '').toLowerCase())
     .join(' ')
     .includes(search);
+}
+function generateColor(i) {
+  const palette = [
+    '#1e4f91', '#10b981', '#f59e0b',
+    '#ef4444', '#8b5cf6', '#06b6d4',
+    '#e11d48', '#14b8a6', '#a855f7'
+  ];
+  return palette[i % palette.length];
+}
+let earnChart;
+
+function renderEarningsChart() {
+  const year = earnYear.value;
+  const month = earnMonth.value;
+
+  const map = {};
+
+  allBatches.forEach(b => {
+    const y = b.date.getFullYear().toString();
+    const m = String(b.date.getMonth() + 1).padStart(2, '0');
+
+    if (year !== 'all' && y !== year) return;
+    if (month !== 'all' && m !== month) return;
+
+    map[b.trek] = (map[b.trek] || 0) + b.turn;
+  });
+
+  const fullNames = Object.keys(map);
+const values = Object.values(map);
+
+// Take only first word of trek name
+const labels = fullNames.map(name => {
+  const firstWord = name.trim().split(/\s+/)[0];
+  return firstWord;
+});
+
+
+  if (earnChart) earnChart.destroy();
+
+  earnChart = new Chart(earnPerTrek, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        backgroundColor: labels.map((_, i) => generateColor(i)),
+        borderRadius: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: {
+          ticks: {
+            callback: value => '₹' + value.toLocaleString('en-IN')
+          }
+        }
+      }
+    }
+  });
 }
 
 function buildBatches(){
@@ -2872,6 +3036,11 @@ function refreshSlides() {
   }
 }
 
+document.getElementById("logoutBtnDash").addEventListener("click", function () {
+  this.classList.add("loading");
+  this.textContent = "Logging out…";
+  window.location.href = "/cdn-cgi/access/logout";
+});
 
   function slideTo(i) {
   const slides = cachedSlides;
