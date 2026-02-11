@@ -428,12 +428,19 @@ body.dark .restricted {
 
 
 <script>
+
+/* ================= FORCE LOGOUT SYNC ================= */
 window.addEventListener('storage', (event) => {
   if (event.key === 'force-logout') {
-    document.body.innerHTML = '';
-    location.reload();
+
+    // Stop rendering immediately
+    document.documentElement.innerHTML = '';
+
+    // Hard redirect to logout endpoint
+    window.location.replace("/cdn-cgi/access/logout");
   }
 });
+
 
 /* ================= PREVENT BF CACHE ================= */
 window.addEventListener("pageshow", e => {
