@@ -2041,7 +2041,7 @@ window.addEventListener("pageshow", e => {
   if (e.persisted) location.reload();
 });
 
-/* ================= SHOW PAGE ================= *
+/* ================= SHOW PAGE ================= */
 
 /* ===== YOUR ORIGINAL SCRIPT (UNCHANGED, ONLY EXTENDED) ===== */
 const DATA_URL = 'https://script.google.com/macros/s/AKfycbz2VgvO8CFo6b-1f02dnnW5s2DDZfv9Ai0U5oiNg6laOStze00NF3TcL0UnOQP6pCsucQ/exec';
@@ -2142,6 +2142,7 @@ for (let i = 1; i <= 12; i++) {
 earnYear.onchange = earnMonth.onchange = renderEarningsChart;
 
 renderEarningsChart();
+document.body.classList.add('loaded');
 
 });
 
