@@ -453,14 +453,28 @@ function toggleDark() {
 
 
 /* ================= LOGOUT ================= */
-/* Ends Cloudflare Access session */
+const logoutChannel = new BroadcastChannel('admin-session');
+
+logoutChannel.onmessage = (event) => {
+  if (event.data === 'force-logout') {
+    document.body.innerHTML = '';
+    location.reload();
+  }
+};
+
 const logoutBtn = document.getElementById("logoutBtn");
 
-logoutBtn.addEventListener("click", () => {
-  logoutBtn.classList.add("loading");
-  logoutBtn.textContent = "Logging out…";
-  window.location.href = "/cdn-cgi/access/logout";
-});
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", function () {
+    logoutChannel.postMessage('force-logout');
+
+    this.classList.add("loading");
+    this.textContent = "Logging out…";
+
+    window.location.href = "/cdn-cgi/access/logout";
+  });
+}
+
 </script>
 
 
