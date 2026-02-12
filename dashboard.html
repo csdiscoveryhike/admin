@@ -105,52 +105,50 @@ h1 { margin-bottom: 4px; }
 ========================================= */
 .filters {
   background: var(--surface);
-  padding: 12px;
-  border-radius: 14px;
+  padding: 14px;
+  border-radius: 16px;
 
   display: grid;
   grid-template-columns: 200px 1fr auto;
-  gap: 10px;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin-bottom: 20px;
 
-  border: 2px solid rgba(245,158,11,0.85); /* Orange edge */
-
-  box-shadow:
-    0 0 0 4px rgba(245,158,11,0.14),  /* Outer glow */
-    var(--shadow-md);
+  box-shadow: var(--shadow-md);
 }
 
-/* Base fields */
+/* Base controls */
 .filters select,
 .filters input,
 .filters button {
-  padding: 9px 10px;
+  padding: 10px 12px;
   font-size: 14px;
   background: var(--surface-soft);
   color: var(--text);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 18px;
   transition: all 0.25s ease;
 }
 
 /* =========================================
-   GRADIENT ON FOCUS (INSIDE ONLY)
+   SEARCH INPUT – PRIMARY FOCUS
 ========================================= */
-.filters input:focus,
-.filters select:focus {
+.filters input[type="text"] {
+  border: 2px solid transparent;
+  font-weight: 500;
+}
+
+.filters input[type="text"]:focus {
   outline: none;
 
-  background:
-    linear-gradient(var(--surface-soft), var(--surface-soft)) padding-box,
-    linear-gradient(
-      135deg,
-      var(--brand-primary),
-      var(--brand-secondary)
-    ) border-box;
+  border: 2px solid var(--brand-secondary);
 
-  border: 1.5px solid transparent;
-
-  box-shadow: 0 0 0 3px rgba(30,79,145,0.18);
+  box-shadow: 
+    0 0 0 4px rgba(30,79,145,0.15);
+}
+.filters:focus-within {
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.08),
+    0 0 0 2px rgba(30,79,145,0.10);
 }
 
 /* =========================================================
