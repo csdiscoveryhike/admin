@@ -254,14 +254,17 @@ body.dark .restricted {
 
 /* ================= FOOTER ================= */
 .footer {
-  margin-top: 40px;
-  padding: 18px;
-  text-align: center;
-  font-size: 12px;
-  color: #d0e4ff;
+  width: 100%;
+  margin-top: 60px;
+  padding: 30px 20px;
   background: linear-gradient(135deg, #00254d, #004b99);
-  border-radius: 14px;
-  animation: fadeUp 0.6s ease;
+  color: #d0e4ff;
+}
+
+.footer-inner {
+  max-width: 820px;
+  margin: auto;
+  text-align: center;
 }
 
 /* ================= ANIMATIONS ================= */
@@ -751,23 +754,27 @@ body.dark .voucher-table td {
   </div>
 
 </div>
-  <!-- FOOTER -->
-  <div class="footer">
-  <div class="session-bar">
-    <span id="sessionText">Secure admin session active</span>
-    <button id="logoutBtn" class="logout-footer-btn">
-      Logout
-    </button>
-  </div>
-  <div style="margin-top:10px;">
-    © Discovery Hike • Internal Admin System
-  </div>
+ <!-- FULL WIDTH FOOTER -->
+<div class="footer">
+  <div class="footer-inner">
 
-  <p style="opacity:0.85;font-size:11px;line-height:1.4;margin-top:8px;">
-  Internal admin system for Discovery Hike operations.<br>
-  Access restricted to authorized staff only.
-</p>
+    <div class="session-bar">
+      <span id="sessionText">Secure admin session active</span>
+      <button id="logoutBtn" class="logout-footer-btn">
+        Logout
+      </button>
+    </div>
 
+    <div style="margin-top:10px;">
+      © Discovery Hike • Internal Admin System
+    </div>
+
+    <p style="opacity:0.85;font-size:11px;line-height:1.4;margin-top:8px;">
+      Internal admin system for Discovery Hike operations.<br>
+      Access restricted to authorized staff only.
+    </p>
+
+  </div>
 </div>
 
 
