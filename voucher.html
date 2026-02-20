@@ -879,8 +879,13 @@ showToast("Please fill required fields.", true);
     })
   }
 );
-    const data = await response.json();
+let data;
 
+try {
+  data = await response.json();
+} catch {
+  throw new Error("Invalid server response");
+}
     if (!response.ok) throw new Error(data.error || "Error");
 
     resultBox.classList.remove("hidden");
@@ -949,8 +954,13 @@ async function fetchVouchers(query = "") {
         signal: searchController.signal
       }
     );
+let data;
 
-    const data = await response.json();
+try {
+  data = await response.json();
+} catch {
+  throw new Error("Invalid server response");
+}
 
     if (!response.ok) {
       throw new Error(data.error || "Search failed");
@@ -1017,7 +1027,13 @@ async function quickRedeem(code) {
       }
     );
 
-    const data = await response.json();
+  let data;
+
+try {
+  data = await response.json();
+} catch {
+  throw new Error("Invalid server response");
+}
     if (!response.ok) throw new Error(data.error || "Redeem failed");
 
     showToast("Voucher redeemed!");
@@ -1045,7 +1061,13 @@ async function quickCancel(code) {
       }
     );
 
-    const data = await response.json();
+  let data;
+
+try {
+  data = await response.json();
+} catch {
+  throw new Error("Invalid server response");
+}
     if (!response.ok) throw new Error(data.error || "Cancel failed");
 
     showToast("Voucher cancelled!");
